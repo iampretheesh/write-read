@@ -1,0 +1,403 @@
+<!-- php header portion goes here -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>write-read-login</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Michroma&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/style.css" />
+
+
+
+  <link rel="stylesheet" href="css/jquery.ui.css">
+
+<script src="js/jquery.min.js"></script>
+
+
+  <script src="js/jquery-1.12.4.js"></script>
+  <script src="js/jquery.ui.js"></script>
+
+
+
+<link href="alert/css/alert.css" rel="stylesheet" />
+<link href="alert/themes/default/theme.css" rel="stylesheet" />
+<script src="alert/js/alert.js"></script>
+
+
+<script type="text/javascript">
+	
+
+let globalForm='';
+
+
+$(document).ready(function(){
+
+
+    			let frm = $('.loginForm-flex');
+
+
+                frm.submit(function (ev) {
+
+
+
+                                    $.ajax({
+                                        type: frm.attr('method'),
+                                        url: frm.attr('action'),
+                                        data: frm.serialize(),
+                                        success: function (resp) {
+                                            
+
+                                        	alert(resp);
+
+                                        		if(resp == 'login-success'){
+
+
+                                        						window.location='index.php';
+
+                                        		}
+
+                                        		else if(resp == 'login-fail'){
+
+
+                                        						window.location = 'logout.php';
+                                        		}
+
+                                            	else{
+
+                                            	
+                                                    $('.loginForm-flex').css( "grid-template-rows", "repeat(1, 100vh)" );
+                                                    $('.loginForm-flex').css( "font-size", "4vw" );
+
+                                        			$('.loginForm-flex').html(resp);
+                            						$('.loginForm-flex').style.gridTemplateRows="20vh";
+												}
+
+                                        }
+                                    });
+                                    ev.preventDefault();
+                });
+
+
+
+});
+
+function validateMe(act,id){
+
+
+								id = id+"_";
+								let arr = id.split('_');
+
+								arr = arr.filter(function(e){return e}); 
+
+
+
+										let email = $('.email').val();
+										let password = $('.pword').val();
+
+										let count = arr.length;
+
+										let limit = Number(count)-Number(1);
+
+
+												for(let i=0;i<count;i++){
+
+															let val = $('#'+arr[i]).val();
+
+
+															if(val==''){
+
+																		$('#'+arr[i]).css("border-bottom", "dashed red");
+																		return false;
+
+
+															}
+
+															else if(val.length<4){
+
+																		$('#'+arr[i]).css("border-bottom", "dashed red");
+																		return false;
+
+
+															}
+
+
+															else if(arr[i]=='email'){
+
+																		let dotFirst = Number(email.indexOf('.'));
+																		let dotLast = Number(email.lastIndexOf('.'));
+																		let attherate = Number(email.indexOf("@"));
+
+																		if(dotFirst==dotLast && dotLast>attherate) {
+
+
+																		   dotLast= Number(dotLast)+Number(dotFirst);  dotFirst = 0; 
+
+																		}
+
+
+																		if(email=='' || email.length<4 || email.indexOf('@') < 0 || email.indexOf('.') < 0 || ((dotLast-attherate)<2)|| ((attherate-dotFirst)<2) || email.indexOf(" ")>-1){
+
+
+																					$('#'+arr[i]).css("border-bottom", "dashed red");
+
+																					return false;
+
+																		}
+
+																		else {
+
+																					$('#'+arr[i]).css("border-bottom", "solid #000");
+
+																		}
+
+															}
+
+															else {
+
+																		$('#'+arr[i]).css("border-bottom", "solid #000");
+
+																		if(act=='resume' && i==limit) { $('.submitButton').click(); }
+
+
+															}
+
+
+												}
+
+
+
+
+}
+
+
+
+function validateMeSign(act,id){
+
+
+
+					/* ids: un , em, pa */
+
+					let email = $('#em').val();
+					let username = $('#un').val(); 
+					let password = $('#pa').val(); 
+
+
+					id = id+"_";
+					let arr = id.split('_');
+
+					arr = arr.filter(function(e){return e}); 
+
+					let count = arr.length;
+					let limit = Number(count)-Number(1);
+
+
+				for(let i=0;i<count;i++){
+
+							let val = $('#'+arr[i]).val();
+
+
+							if(val==''){
+
+										$('#'+arr[i]).css("border-bottom", "dashed red");
+										return false;
+
+
+							}
+
+							else if(val.length<4){
+
+										$('#'+arr[i]).css("border-bottom", "dashed red");
+										return false;
+
+
+							}
+
+
+							else if(arr[i]=='em'){
+
+										let dotFirst = Number(email.indexOf('.'));
+										let dotLast = Number(email.lastIndexOf('.'));
+										let attherate = Number(email.indexOf("@"));
+
+										if(dotFirst==dotLast && dotLast>attherate) {
+
+
+										   dotLast= Number(dotLast)+Number(dotFirst);  dotFirst = 0; 
+
+										}
+
+
+										if(email=='' || email.length<4 || email.indexOf('@') < 0 || email.indexOf('.') < 0 || ((dotLast-attherate)<2)|| ((attherate-dotFirst)<2) || email.indexOf(" ")>-1){
+
+
+													$('#'+arr[i]).css("border-bottom", "dashed red");
+
+													return false;
+
+										}
+
+										else {
+
+													$('#'+arr[i]).css("border-bottom", "solid #000");
+
+										}
+
+							}
+
+							else {
+
+										$('#'+arr[i]).css("border-bottom", "solid #000");
+
+										if(act=='resume' && i==limit) { $('.submitButton').click(); }
+
+
+							}
+
+
+				}
+
+}
+
+
+
+function signupForm(){
+
+
+					$('#signup-header').css('background-color','#000000');
+					$('#signup-header').css('color','#ffffff');
+
+					$('#login-header').css('background-color','#ffffff');
+					$('#login-header').css('color','#000000');
+
+					globalForm = $('.loginForm-flex').html();
+
+
+		let form = '<div class="ilogin">'+
+
+					'<input type="text" style="display: none;" name="page" id="page" value="signup" />'+
+
+					'<input onkeyup="validateMeSign(\'pause\',this.id);" onchange="validateMeSign(\'pause\',this.id);" onclick="validateMeSign(\'pause\',this.id);" onkeydown="validateMeSign(\'pause\',this.id);" type="text" class="user" id="un" type="text" name="un" placeholder="type username here" />'+
+
+					'</div>'+
+
+
+					'<div class="ilogin">'+
+
+					'<input onkeyup="validateMeSign(\'pause\',this.id);" onchange="validateMeSign(\'pause\',this.id);" onclick="validateMeSign(\'pause\',this.id);" onkeydown="validateMeSign(\'pause\',this.id);" class="email" id="em" type="text" name="em" placeholder="type email here" />'+
+
+					'</div>'+
+
+
+						'<div class="ilogin">'+
+
+								'<input onkeyup="validateMeSign(\'pause\',this.id);" onchange="validateMeSign(\'pause\',this.id);" onclick="validateMeSign(\'pause\',this.id);" onkeydown="validateMeSign(\'pause\',this.id);" class="pword" id="pa" type="password" name="pa" placeholder="type password here" />'+
+
+						'</div>'+
+
+						'<div class="ilogin">'+
+
+								'<button type="button" onclick="validateMeSign(\'resume\',\'un_em_pa\');" id="iloginBtn" name="btn">SUBMIT</button>'+
+
+						'</div>'+
+
+						'<input style="display: none" class="submitButton" id="loginBtn" name="submit" type="submit" value="Here I Go" />';
+
+
+						$('.loginForm-flex').html(form);
+						$('.ilogin').css('height','15vh');
+
+
+}
+
+
+function loginForm(){
+
+
+					$('#login-header').css('background-color','#000000');
+					$('#login-header').css('color','#ffffff');
+
+					$('#signup-header').css('background-color','#ffffff');
+					$('#signup-header').css('color','#000000');
+
+					if(globalForm!=''){
+
+					$('.loginForm-flex').html(globalForm);
+					$('.ilogin').css('height','20vh');	
+
+					}
+
+}
+
+
+</script>
+
+
+</head>
+<body>
+
+<div class="entry-page">
+
+						<div class="header-grid">
+							
+
+										<div onclick="loginForm();" id="login-header" class="login-header">
+
+																Login
+
+										</div>	
+
+
+										<div onclick="signupForm();" id="signup-header" class="login-header">
+
+																SignUp
+
+										</div>
+
+
+						</div>
+
+
+
+						<form class="loginForm-flex" method="POST" action="ajax/saveThis.php">
+
+
+						<input type="text" style="display: none;" name="page" id="page" value="login" />
+
+
+											<div class="ilogin">
+
+
+																<input onchange="validateMe('pause',this.id);" onclick="validateMe('pause',this.id);" onkeyup="validateMe('pause',this.id);" onkeydown="validateMe('pause',this.id);" type="text" class="email" id="email" value="hellovisitor@readwrite.com" name="em" placeholder="type login email here" />
+
+											</div>
+
+											<div class="ilogin">
+
+																<input onchange="validateMe('pause',this.id);" onclick="validateMe('pause',this.id);" onkeyup="validateMe('pause',this.id);" onkeydown="validateMe('pause',this.id);" type="password" class="pword" id="pword" name="pa" value="hellovisitor@readwrite.com" placeholder="type login password here" />
+
+											</div>
+
+											<div class="ilogin">
+
+																<button type="button" onclick="validateMe('resume','email_pword');" id="iloginBtn" name="btn">SUBMIT</button>
+
+											</div>
+
+
+											<input style="display: none" class="submitButton" id="loginBtn" name="submit" type="submit" value="Here I Go" />
+
+
+						</form>	
+
+
+						<div class="ifooter">read-write application by pretheesh all rights reserved&copy;2020</div>
+
+
+
+</div>
+
+</body>
+</html>
